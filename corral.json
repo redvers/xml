@@ -1,0 +1,15 @@
+{
+  "packages": [
+    "xml"
+  ],
+  "deps": [
+  ],
+  "info": {
+    "description": "A pure Pony XML parser",
+    "homepage": "https://github.com/redvers/xml/",
+    "license": "BSD-2-Clause",
+    "documentation_url": "https://redvers.github.io/xml",
+    "version": "0.0.0",
+    "name": "xml"
+  }
+}

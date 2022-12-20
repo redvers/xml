@@ -4,6 +4,6 @@ type XmlError is (
   | XmlEntityError
 )
 
-primitive XmlNone
-primitive XmlTagMismatch
-primitive XmlEntityError
+primitive XmlNone fun apply(): String => "(none)"
+primitive XmlTagMismatch fun apply(): String => "TagMismatch"
+primitive XmlEntityError fun apply(): String => "EntityError"

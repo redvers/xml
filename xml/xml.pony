@@ -48,7 +48,7 @@ actor Xml
   fun box _path(): String =>
     String.from_utf32('/').join(_stag.values()) + if _attrkey.size() > 0 then "#" + _attrkey else "" end
 
-  fun ref notify(node: XmlNode, content: String) =>
+  fun \nodoc\ ref notify(node: XmlNode, content: String) =>
     if _reset then
       _notify(XmlStartDoc, "", "")
       _reset = false

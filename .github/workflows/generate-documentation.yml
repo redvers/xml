@@ -7,7 +7,6 @@ permissions:
   contents: read
   pages: write
   id-token: write
-  packages: read
 
 concurrency:
   group: "update-documentation"
@@ -20,17 +19,15 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/ponylang/library-documentation-action-v2:release
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Generate documentation
-        run: /entrypoint.py
-        env:
-          INPUT_SITE_URL: "https://redvers.github.io/xml/"
-          INPUT_LIBRARY_NAME: "xml"
-          INPUT_DOCS_BUILD_DIR: "build/xml-docs"
+        uses: docker://ponylang/library-documentation-action-v2:release
+        with:
+          site_url: "https://redvers.github.io/xml/"
+          library_name: "xml"
+          docs_build_dir: "build/xml-docs"
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact

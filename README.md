@@ -8,6 +8,9 @@ xml is an alpha-level package.
 
 You shouldn't be using this as it is in active development and not ready to be used, at all. Don't. Just don't use it yet.
 
+This project is extended from the fine work at crzbear/pony-xml.  Thank you crzbear!
+
+
 ## Installation
 
 * Install [corral](https://github.com/ponylang/corral)

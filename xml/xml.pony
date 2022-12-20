@@ -34,6 +34,50 @@ actor Xml
 
     _state_init()
 
+  be parse(source: String) =>
+    _src = _src + source
+    var nth: USize = 0
+    while true do
+      let find_to =
+        try
+          _src.find(">", 0, nth)?
+        else
+          break
+        end
+
+      var found: XmlToken =
+        try
+          var token: (XmlToken | None) = None
+
+          var to: ISize = find_to
+          let tv = _token.values()
+          while tv.has_next() do
+            try
+              let t = tv.next()?
+                if t.find(_src.substring(0, to + t.size())) then
+                  token = t
+                  if t.pos == 0 then
+                    break
+                  end
+                  to = t.pos - 1
+                end
+              end
+          end
+
+          token as XmlToken
+        else
+//                break
+          nth = nth + 1
+          continue
+        end
+
+        _head = _src.substring(0, found.pos)
+        found.proc()
+
+        let cut = found.pos + found.size()
+        _src = _src.cut(0, cut)
+    end
+
   be reset() =>
     _state_init()
     _reset = true
@@ -316,48 +360,4 @@ actor Xml
     end
     notify(XmlEntityError, source)
     ""
-
-  be parse(source: String) =>
-    _src = _src + source
-    var nth: USize = 0
-    while true do
-      let find_to =
-        try
-          _src.find(">", 0, nth)?
-        else
-          break
-        end
-
-      var found: XmlToken =
-        try
-          var token: (XmlToken | None) = None
-
-          var to: ISize = find_to
-          let tv = _token.values()
-          while tv.has_next() do
-            try
-              let t = tv.next()?
-                if t.find(_src.substring(0, to + t.size())) then
-                  token = t
-                  if t.pos == 0 then
-                    break
-                  end
-                  to = t.pos - 1
-                end
-              end
-          end
-
-          token as XmlToken
-        else
-//                break
-          nth = nth + 1
-          continue
-        end
-
-        _head = _src.substring(0, found.pos)
-        found.proc()
-
-        let cut = found.pos + found.size()
-        _src = _src.cut(0, cut)
-    end
 

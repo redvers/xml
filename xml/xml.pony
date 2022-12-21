@@ -21,7 +21,7 @@ actor Xml
 
   var _head: String = ""
 
-  var _src: String = ""
+  let _src: String trn = recover trn String end
 
   new create(notify': XmlNodeNotify) =>
     _notify = notify'
@@ -35,7 +35,7 @@ actor Xml
     _state_init()
 
   be parse(source: String) =>
-    _src = _src + source
+    _src.append(source)
     var nth: USize = 0
     while true do
       let find_to =
@@ -75,7 +75,7 @@ actor Xml
         found.proc()
 
         let cut = found.pos + found.size()
-        _src = _src.cut(0, cut)
+        _src.cut_in_place(0, cut)
     end
 
   be reset() =>
@@ -87,7 +87,7 @@ actor Xml
     _lastnode = XmlNone
     _content = ""
     _head = ""
-    _src = ""
+    _src.clear()
 
   fun box _path(): String =>
     String.from_utf32('/').join(_stag.values()) + if _attrkey.size() > 0 then "#" + _attrkey else "" end

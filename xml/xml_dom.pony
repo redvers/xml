@@ -4,7 +4,7 @@ use @exit[None](a: I32)
 use @printf[U8](fmt: Pointer[U8] tag, ...)
 
 actor XmlDom
-  var dom: XmlDOMNode = XmlDOMNode("", None)
+  var dom: XmlDOMNode = XmlDOMNode("".clone(), None)
   var ptr: (XmlDOMNode | None) = None
   var lastkey: (String | None) = None
 
@@ -23,7 +23,7 @@ actor XmlDom
     end
 
   fun ref start_tag(a: XmlNode, b: String, c: String) =>
-    let node: XmlDOMNode = XmlDOMNode(b, ptr)
+    let node: XmlDOMNode = XmlDOMNode(b.clone(), ptr)
     ptr = node
 
   fun ref end_tag(a: XmlNode, b: String, c: String) =>
@@ -60,7 +60,7 @@ actor XmlDom
     lastkey = b
 
   fun ref start_document(a: XmlNode, b: String, c: String) =>
-    let node: XmlDOMNode = XmlDOMNode("", None)
+    let node: XmlDOMNode = XmlDOMNode("".clone(), None)
     ptr = node
     dom = node
 
@@ -69,5 +69,5 @@ actor XmlDom
     @exit(1)
 
 
-  fun test() =>
-    dom.print()
+  fun test() => None
+ //   dom.print()

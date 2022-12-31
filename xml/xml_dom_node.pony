@@ -1,7 +1,7 @@
 use "collections"
 
 class XmlDOMNode
-  let name: String iso
+  let name: String val
   let attributes: Map[String, String] = Map[String, String]
   let children: Array[XmlDOMNode] = []
   let parent: (XmlDOMNode | None)
@@ -11,7 +11,6 @@ class XmlDOMNode
     name = consume name'
     parent = parent'
 
-/*
   fun print(depth: USize = 0) =>
     @printf("\n%sNode: %s\n".cstring(), " ".mul(depth).cstring(), name.cstring())
     if (content != "") then
@@ -31,4 +30,3 @@ class XmlDOMNode
       end
     end
 
-*/

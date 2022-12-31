@@ -3,7 +3,7 @@ use "collections"
 type XmlNodeNotify is {(XmlNode, String, String)} val
 type XmlTokenProc is {ref ()}
 
-actor Xml
+class Xml
   let _notify: XmlNodeNotify
 
   let _entity: Map[String, String] = Map[String, String].create()
@@ -34,7 +34,7 @@ actor Xml
 
     _state_init()
 
-  be parse(source: String) =>
+  fun ref parse(source: String) =>
     _src.append(source)
     var nth: USize = 0
     while true do
@@ -78,7 +78,7 @@ actor Xml
         _src.cut_in_place(0, cut)
     end
 
-  be reset() =>
+  fun ref reset() =>
     _state_init()
     _reset = true
     _stag.clear()

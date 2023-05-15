@@ -24,6 +24,7 @@ actor XmlDom
 
   fun ref start_tag(a: XmlNode, b: String, c: String) =>
     let node: XmlDOMNode = XmlDOMNode(b.clone(), ptr)
+    node.path = c
     ptr = node
 
   fun ref end_tag(a: XmlNode, b: String, c: String) =>
@@ -70,4 +71,4 @@ actor XmlDom
 
 
   fun test() => None
- //   dom.print()
+    dom.print()

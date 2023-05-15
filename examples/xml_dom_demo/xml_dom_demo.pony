@@ -7,7 +7,7 @@ actor Main
 
   new create(env: Env) =>
     _env = env
-    let path = FilePath(FileAuth(env.root), "test.xml")
+    let path = FilePath(FileAuth(env.root), "GLib-2.0.gir")
     var file: File iso = recover iso File(path) end
 
     _xmlfile = XmlFile(consume file)

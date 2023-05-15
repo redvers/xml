@@ -1,10 +1,10 @@
 use "collections"
 
-type XmlNodeNotify is {(XmlNode, String, String)} val
+type XmlNodeNotify is {(XmlNode val, String val, String val)}
 type XmlTokenProc is {ref ()}
 
 class Xml
-  let _notify: XmlNodeNotify
+  var notify: XmlNodeNotify
 
   let _entity: Map[String, String] = Map[String, String].create()
   let _token: List[XmlToken] = List[XmlToken].create()
@@ -24,7 +24,7 @@ class Xml
   let _src: String trn = recover trn String end
 
   new create(notify': XmlNodeNotify) =>
-    _notify = notify'
+    notify = notify'
 
     _entity("amp") = "&"
     _entity("lt") = "<"
@@ -33,6 +33,7 @@ class Xml
     _entity("quot") = "\""
 
     _state_init()
+
 
   fun ref parse(source: String) =>
     _src.append(source)
@@ -92,14 +93,14 @@ class Xml
   fun box _path(): String =>
     String.from_utf32('/').join(_stag.values()) + if _attrkey.size() > 0 then "#" + _attrkey else "" end
 
-  fun \nodoc\ ref notify(node: XmlNode, content: String) =>
+  fun \nodoc\ ref do_notify(node: XmlNode, content: String) =>
     if _reset then
-      _notify(XmlStartDoc, "", "")
+      notify(XmlStartDoc, "", "")
       _reset = false
     end
-    _notify(node, content, _path())
+    notify(node, content, _path())
     if (node is XmlETag) and (_stag.size() == 0) then
-      _notify(XmlEndDoc, "", "")
+      notify(XmlEndDoc, "", "")
     end
 
   fun ref _append_notify() =>
@@ -117,7 +118,7 @@ class Xml
     end
     if _content.size() > 0 then
       if not (node is XmlNone) then
-        notify(node, _content)
+        do_notify(node, _content)
       end
 
       if _lastnode is XmlSTag then
@@ -238,10 +239,10 @@ class Xml
       let endtag = _head
       let starttag = try _stag.pop()? else "" end
       if starttag != endtag then
-        notify(XmlTagMismatch, starttag + "/" + endtag)
+        do_notify(XmlTagMismatch, starttag + "/" + endtag)
       end
 
-      notify(XmlETag, endtag)
+      do_notify(XmlETag, endtag)
     end
 
     _token.clear()
@@ -252,7 +253,7 @@ class Xml
     _lastnode = XmlNone
     _nextnode = XmlCData
 
-    notify(XmlETag, try _stag.pop()? else "" end)
+    do_notify(XmlETag, try _stag.pop()? else "" end)
 
     _token.clear()
     _token_all_open()
@@ -274,7 +275,7 @@ class Xml
     _token_comment_close()
 
   fun ref _state_comment_close() =>
-    notify(XmlComment, _head)
+    do_notify(XmlComment, _head)
 
     _token.clear()
     _token_all_open()
@@ -285,7 +286,7 @@ class Xml
 
   fun ref _state_pi_close() =>
     // todo handle XMLDecl
-    notify(XmlPI, _head)
+    do_notify(XmlPI, _head)
 
     _token.clear()
     _token_all_open()
@@ -358,6 +359,6 @@ class Xml
         end
       return recover String.from_utf32(source.substring(from).u32(base)?) end
     end
-    notify(XmlEntityError, source)
+    do_notify(XmlEntityError, source)
     ""
 

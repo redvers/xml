@@ -3,12 +3,12 @@ use "collections"
 use @exit[None](a: I32)
 use @printf[U8](fmt: Pointer[U8] tag, ...)
 
-actor XmlDom
+class XmlDom
   var dom: XmlDOMNode = XmlDOMNode("".clone(), None)
   var ptr: (XmlDOMNode | None) = None
   var lastkey: (String | None) = None
 
-  be callback(a: XmlNode, b: String, c: String) => None
+  fun ref callback(a: XmlNode, b: String, c: String) => None
     match a
     | let t: XmlStartDoc => start_document(t, b, c)
     | let t: XmlError => die()
@@ -70,4 +70,4 @@ actor XmlDom
 
 
   fun test() => None
- //   dom.print()
+    dom.print()
